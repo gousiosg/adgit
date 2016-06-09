@@ -8,12 +8,14 @@ module.exports = (function(){
     
 });
 
-function getReposList(username){
+function getReposList(username, callback){
+    var that = this;
+    that.isWorking = true;
     var post_data = "";
-
+    
     var options = {
       host: 'api.github.com',
-      path: '/users/' + username + '/repos/readme',
+      path: '/users/' + username + '/repos',
       method: 'GET',
       headers: {
           'User-Agent': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)'
@@ -21,28 +23,28 @@ function getReposList(username){
     };
     
     sendRequest(post_data, options, function(response){
+
         var resBody = '';
         response.on("data", function(chunk) {
             resBody += chunk;
         });
         response.on("end", function(){
-            console.log(resBody); 
+            result = JSON.parse(resBody);
+            callback(result);
+            
         });
-        
-    })
+    });
 
 }
 
 function sendRequest(data, options, responseFunc, errorFunc){
     var req = https.request(options, responseFunc);
-        
-    });
     
     if(errorFunc !== undefined){
         req.on('error', errorFunc);
     }
     else{
-        req.on('error', function(err){
+        req.on('error', function(err){    
            console.log(err); 
         });
     }
