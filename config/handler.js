@@ -1,5 +1,7 @@
 const github = require("./github");
 
+const indeed = require("./indeed");
+
 module.exports = (function(){
     var struct = {  
         analysis: analysis,
@@ -13,7 +15,14 @@ module.exports = (function(){
 })(); 
 
 function init(self){
+    
+    indeed.searchJobs("software developer", "Nijmegen", function(result, request){
+        console.log(result);
+        console.log(request);
+    })
+    
     github.getAuth(function(result){
+       console.log(result);
        github.token = result["token"];
        self.isReady = true;
     });
@@ -21,11 +30,10 @@ function init(self){
 }
 
 function analysis(req, res){
-    console.log("Starting handler");
-    
-    
+        
     github.getReposList("Michsior14", function(result){
         getReadmes(result);
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end(JSON.stringify(result));
         
     });

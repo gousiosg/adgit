@@ -9,7 +9,7 @@ const github = require("./config/github.js");
 const handler = require("./config/handler.js");
 
 requests
-  .subscribe(handlerRequest)
+  .subscribe(main);
 
 http.createServer((req, res) => {
   requests.onNext({ req: req, res: res });
@@ -17,11 +17,8 @@ http.createServer((req, res) => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
 
-function handlerRequest(e) {
-//    console.log('handling Request: ' + e.req.url);
-    e.res.writeHead(200, { 'Content-Type': 'text/plain' });
-//    e.res.end('Request received.\n');
+function main(e) {
     
     var handlerObject = handler.analysis(e.req, e.res);
-    
+        
 }
