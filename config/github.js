@@ -9,15 +9,7 @@ module.exports = (function(){
     this.getAuth = getAuth;
     this.token = null;
     
-    var struct = {
-        requestAuth: requestAuth,
-        getReposList: getReposList,
-        getReadme: getReadme,
-        getAuth: getAuth,
-        token: null
-    };
-    
-    return struct;
+    return this;
     
 })();
 
