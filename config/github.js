@@ -1,15 +1,30 @@
 const https = require('https');
 
 module.exports = (function(){
-   
-    return {
+    var struct = {};
+    
+    this.getAuth = getAuth;
+    this.getReposList = getReposList;
+    this.getReadme = getReadme;
+    this.getAuth = getAuth;
+    this.token = null;
+    
+    var struct = {
         requestAuth: requestAuth,
         getReposList: getReposList,
-        getReadme: getReadme
-        
+        getReadme: getReadme,
+        getAuth: getAuth,
+        token: null
     };
     
+    return struct;
+    
 })();
+
+function getAuth(callback){
+    var that = this;
+    requestAuth("f7959612467f83251b12", "a61692d8e35adfb15f5b4989ead0fcc947073c20", callback);
+}
 
 function getReposList(username, callback){
     var post_data = "";
@@ -35,6 +50,7 @@ function getReadme(fullName, callback){
       path: '/repos/' + fullName + '/readme',
       method: 'GET',
       headers: {
+          'X-Shopify-Access-Token': this.token,          
           'User-Agent': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)'
       }
     };
@@ -42,27 +58,45 @@ function getReadme(fullName, callback){
     sendRequest(post_data, options, callback);    
 }
 
-function requestAuth(clientId, callback){
-//    var post_data = "client_id=" + clientId;
-    var post_data = "";
+function requestAuth(clientId, clientSecret, callback){
+    var post_data = { 
+        "scopes": [ "public_repo"],
+        "note": "admin script",
+        "client_id" : clientId,
+        "client_secret": clientSecret
+    };
+    post_data = JSON.stringify(post_data);
+    
+    var username = "MKMZ";
+    var password = "LubieKoty666";
+    
+    var basic_auth = username + ":" + password;
     
     var options = {
       host: 'api.github.com',
-      path: '/login/oauth/authorize?client_id=' + clientId,
-      method: 'GET',
-      headers: {
-          'client_id'     : clientId,
-          'User-Agent'    : 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)'
-//          'Content-Type'  : 'application/x-www-form-urlencoded',
-//          'Content-Length': post_data.length
+      path: '/authorizations',
+      method: 'POST', 
+      auth:  basic_auth,
+        headers: {
+          "Accept"        : "application/vnd.github+json",
+          'User-Agent'    : 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)',
+          'Content-Type'  : 'application/json',
+          'Content-Length': post_data.length
       }
     };
     
     sendRequest(post_data, options, callback);       
 }
 
-
 function sendRequest(data, options, responseFunc, errorFunc){
+    console.log(this.token);
+    if(this.token !== null){
+        options["headers"]["X-Shopify-Access-Token"] = this.token;
+    }
+    
+//    console.log("Sending request:");
+//    console.log(options);
+    
     var req = https.request(options, function(response){
 
         var resBody = '';
@@ -71,7 +105,7 @@ function sendRequest(data, options, responseFunc, errorFunc){
         });
         response.on("end", function(){
             result = JSON.parse(resBody);
-            responseFunc(result);
+            responseFunc(result, options);
             
         });
     });

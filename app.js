@@ -22,6 +22,6 @@ function handlerRequest(e) {
     e.res.writeHead(200, { 'Content-Type': 'text/plain' });
 //    e.res.end('Request received.\n');
     
-//    var handlerObject = handler.analysis(e.req, e.res);
+    var handlerObject = handler.analysis(e.req, e.res);
     
 }

@@ -1,19 +1,23 @@
 const github = require("./github");
 
 module.exports = (function(){
-    init();
-    
-    return {
-        analysis: analysis
+    var struct = {  
+        analysis: analysis,
+        isReady: false
     };
+    
+    init(struct);
+    
+    return struct;
     
 })(); 
 
-function init(){
-    github.requestAuth("f7959612467f83251b12", function(result){
-        console.log("Requested auth:");
-        console.log(result); 
+function init(self){
+    github.getAuth(function(result){
+       github.token = result["token"];
+       self.isReady = true;
     });
+    
 }
 
 function analysis(req, res){
@@ -32,14 +36,13 @@ function analysis(req, res){
 function getReadmes(reposList){
    
     for(var i = 0; i < reposList.length; i++){
-        github.getReadme(reposList[i]["full_name"], function(result){
-//            console.log("Next readme:");
+        github.getReadme(reposList[i]["full_name"], function(result, request){
 
             if(result["content"] !== undefined){
-                console.log(result["content"]);
-                console.log(result["encoding"]);
-                var readmeText = Buffer.from(result["content"], "base64");
-                console.log(reposList[i]["full_name"] + ": ");
+                console.log("Readme req");
+                console.log(reposList);
+                var readmeText = new Buffer(result["content"], result["encoding"]);
+//                console.log(reposList[i]["full_name"] + ": ");
                 console.log(readmeText);
             }
 
