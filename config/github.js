@@ -60,8 +60,8 @@ function requestAuth(clientId, clientSecret, callback){
     };
     post_data = JSON.stringify(post_data);
     
-    var username = "MKMZ";
-    var password = "LubieKoty666";
+    var username = config.get('github.username');
+    var password = config.get('github.password');
     
     var basic_auth = username + ":" + password;
     
