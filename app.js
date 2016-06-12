@@ -1,9 +1,10 @@
 const Rx = require('rx');
 const http = require('http');
+const config = require('config');
 
 const requests = new Rx.Subject();
-const hostname = 'localhost';
-const port = 3000;
+const hostname = config.get('connection.host');
+const port = config.get('connection.port');
 
 const github = require("./config/github.js");
 const handler = require("./config/handler.js");

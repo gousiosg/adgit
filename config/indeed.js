@@ -1,5 +1,6 @@
 const http = require("http");
 const querystring = require("querystring");
+const config = require("config");
 
 module.exports = (function(){
     var struct = {
@@ -13,13 +14,13 @@ function searchJobs(query, location, callback){
     var post_data = "";
     
     var paramJSON = {
-        publisher: "872702252786463",
+        publisher: config.get("indeed.publisher"),
         q: query,
         l: location,
-        radius: 50,
-        v: "2",
+        radius: config.get("indeed.radius"),
+        v: config.get("indeed.v"),
         co: "nl",
-        limit: 100,
+        limit: config.get("indeed.limit"),
         format: "json"
     };
     

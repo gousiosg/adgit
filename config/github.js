@@ -1,4 +1,5 @@
 const https = require('https');
+const config = require('config');
 
 module.exports = (function(){
     var struct = {};
@@ -54,8 +55,8 @@ function requestAuth(clientId, clientSecret, callback){
     var post_data = { 
         "scopes": [ "public_repo"],
         "note": "admin script",
-        "client_id" : clientId,
-        "client_secret": clientSecret
+        "client_id" : config.get('github.client_id'),
+        "client_secret": config.get('github.client_secret')
     };
     post_data = JSON.stringify(post_data);
     
@@ -81,7 +82,7 @@ function requestAuth(clientId, clientSecret, callback){
 }
 
 function sendRequest(data, options, responseFunc, errorFunc){
-    console.log(this.token);
+//    console.log(this.token);
     if(this.token !== null){
         options["headers"]["X-Shopify-Access-Token"] = this.token;
     }
