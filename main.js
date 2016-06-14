@@ -6,8 +6,7 @@ const requests = new Rx.Subject();
 const hostname = config.get('connection.host');
 const port = config.get('connection.port');
 
-const github = require("./config/github.js");
-const handler = require("./config/handler.js");
+const handler = require("./app/handler.js");
 
 requests
   .subscribe(main);

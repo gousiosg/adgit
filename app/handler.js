@@ -1,6 +1,6 @@
-const github = require("./github");
+const github = require("./modules/github");
 
-const indeed = require("./indeed");
+const indeed = require("./modules/indeed");
 
 module.exports = (function(){
     var struct = {  

@@ -16,7 +16,7 @@ module.exports = (function(){
 
 function getAuth(callback){
     var that = this;
-    requestAuth("f7959612467f83251b12", "a61692d8e35adfb15f5b4989ead0fcc947073c20", callback);
+    requestAuth(callback);
 }
 
 function getReposList(username, callback){
@@ -51,7 +51,7 @@ function getReadme(fullName, callback){
     sendRequest(post_data, options, callback);    
 }
 
-function requestAuth(clientId, clientSecret, callback){
+function requestAuth(callback){
     var post_data = { 
         "scopes": [ "public_repo"],
         "note": "admin script",
