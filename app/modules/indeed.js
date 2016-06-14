@@ -1,6 +1,7 @@
-const http = require("http");
 const querystring = require("querystring");
 const config = require("config");
+
+const utilities = require('../utilities');
 
 module.exports = (function(){
     var struct = {
@@ -36,32 +37,5 @@ function searchJobs(query, location, callback){
         }
     };
     
-    sendRequest(post_data, options, callback);       
+    utilities.requestHTTP(post_data, options, callback);       
 }
-
-function sendRequest(data, options, responseFunc, errorFunc){
-    
-    var req = http.request(options, function(response){
-
-        var resBody = '';
-        response.on("data", function(chunk) {
-            resBody += chunk;
-        });
-        response.on("end", function(){
-            result = JSON.parse(resBody);
-            responseFunc(result, options);
-            
-        });
-    });
-    
-    if(errorFunc !== undefined){
-        req.on('error', errorFunc);
-    }
-    else{
-        req.on('error', function(err){    
-           console.log(err); 
-        });
-    }
-    req.write(data);
-    req.end();
-}    

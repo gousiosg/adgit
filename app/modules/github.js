@@ -1,5 +1,6 @@
-const https = require('https');
 const config = require('config');
+
+const utilities = require('../utilities');
 
 module.exports = (function(){
     var struct = {};
@@ -31,7 +32,11 @@ function getReposList(username, callback){
       }
     };
     
-    sendRequest(post_data, options, callback);
+    if(this.token !== null){
+        options["headers"]["X-Shopify-Access-Token"] = this.token;
+    }
+    
+    utilities.requestHTTPS(post_data, options, callback);
 
 }
 
@@ -48,7 +53,11 @@ function getReadme(fullName, callback){
       }
     };
     
-    sendRequest(post_data, options, callback);    
+    if(this.token !== null){
+        options["headers"]["X-Shopify-Access-Token"] = this.token;
+    }
+    
+    utilities.requestHTTPS(post_data, options, callback);    
 }
 
 function requestAuth(callback){
@@ -78,41 +87,9 @@ function requestAuth(callback){
       }
     };
     
-    sendRequest(post_data, options, callback);       
+    utilities.requestHTTPS(post_data, options, callback);       
 }
 
-function sendRequest(data, options, responseFunc, errorFunc){
-//    console.log(this.token);
-    if(this.token !== null){
-        options["headers"]["X-Shopify-Access-Token"] = this.token;
-    }
-    
-//    console.log("Sending request:");
-//    console.log(options);
-    
-    var req = https.request(options, function(response){
 
-        var resBody = '';
-        response.on("data", function(chunk) {
-            resBody += chunk;
-        });
-        response.on("end", function(){
-            result = JSON.parse(resBody);
-            responseFunc(result, options);
-            
-        });
-    });
-    
-    if(errorFunc !== undefined){
-        req.on('error', errorFunc);
-    }
-    else{
-        req.on('error', function(err){    
-           console.log(err); 
-        });
-    }
-    req.write(data);
-    req.end();
-}    
     
     
