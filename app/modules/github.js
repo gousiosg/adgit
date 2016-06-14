@@ -9,6 +9,7 @@ module.exports = (function(){
     this.getReposList = getReposList;
     this.getReadme = getReadme;
     this.getAuth = getAuth;
+    this.secureRequest = secureRequest;
     this.token = null;
     
     return this;
@@ -31,10 +32,8 @@ function getReposList(username, callback){
           'User-Agent': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)'
       }
     };
-    
-    if(this.token !== null){
-        options["headers"]["X-Shopify-Access-Token"] = this.token;
-    }
+
+    options = this.secureRequest(options);
     
     utilities.requestHTTPS(post_data, options, callback);
 
@@ -53,9 +52,7 @@ function getReadme(fullName, callback){
       }
     };
     
-    if(this.token !== null){
-        options["headers"]["X-Shopify-Access-Token"] = this.token;
-    }
+    options = this.secureRequest(options);
     
     utilities.requestHTTPS(post_data, options, callback);    
 }
@@ -90,6 +87,14 @@ function requestAuth(callback){
     utilities.requestHTTPS(post_data, options, callback);       
 }
 
-
+function secureRequest(options){
+    if(options["headers"] === undefined){
+        options["headers"] = {};
+    }
+    if(this.token !== null){
+        options["headers"]["X-Shopify-Access-Token"] = this.token;
+    }
+    return options;
+}
     
     
