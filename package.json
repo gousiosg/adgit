@@ -14,6 +14,7 @@
     "country-data": "0.0.24",
     "mongoose": "^4.5.0",
     "querystring": "^0.2.0",
+    "request": "^2.72.0",
     "rx": "^4.1.0"
   }
 }

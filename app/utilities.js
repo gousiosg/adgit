@@ -1,9 +1,30 @@
 const https = require('https');
 const http = require('http');
+const request = require('request');
 
 module.exports = {
     requestHTTPS : requestHTTPS,
-    requestHTTP  : requestHTTP
+	requestHTTP  : requestHTTP,
+	getPage		 : getPage
+}
+
+function getPage(fullUrl, responseFunc, errorFunc) {
+	if (errorFunc === undefined) {
+		errorFunc = function (err) {
+			console.log(err);
+		}	
+	}	
+	
+	request(fullUrl, function (err, res, body) {
+		if (err !== null) {
+			errorFunc(err);
+		}
+		else {
+			responseFunc(body, res);
+		}
+
+	});
+	
 }
 
 function requestHTTPS(data, options, responseFunc, errorFunc){
