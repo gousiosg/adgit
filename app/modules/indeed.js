@@ -1,6 +1,7 @@
 const querystring = require("querystring");
 const config = require("config");
 const async = require("async");
+const cheerio = require('cheerio');
 
 const utilities = require('../utilities');
 
@@ -41,29 +42,46 @@ function searchJobs(query, city, country, callback){
     utilities.requestHTTP(post_data, options, callback);       
 }
 
-function prepareJobs(city, country) {
+function getJobSummary(html) {
+	var doc = cheerio.load(html);
+	var summary = doc('title').html() + doc('#job_summary').html();
+	//console.log(doc('#job_summary').html());
+	//console.log(doc('title').html());
+
+	return summary;
+}
+
+function prepareJobs(city, country, callback) {
 	
 	var jobTable = [];
 	
-	async.forEachOf(config.get("indeed.query_table"), function (item, idx, callback) {
+	async.forEachOf(config.get("indeed.query_table"), function (item, idx, callback0) {
 		searchJobs(item, "Nijmegen", "nl", function (result, request) {
-			jobTable = jobTable.concat(result['results']);
+			//jobTable = jobTable.concat(result['results']);
 			var jobs = result['results'];
-			for (var i = 0; i < jobs.length; i++) {
-				utilities.getPage(jobs[i]['url'], function (res2, req2) {
-					console.log(res2);
+			async.forEachOf(jobs, function (item2, idx2, callback2) {
+				utilities.getPage(item2['url'], function (res2, req2) {
+					var jobTxt = getJobSummary(res2);
+					console.log(jobTxt);
+					jobTable.push(jobTxt);
+					callback2();
+				}, function (err3) {
+					callback2(err3);
 				});
-			}
+			}, function (err2) {
+				if (err2) {
+					console.error(err2.message);
+				}				
+				callback0();
+			});
 			
-			callback();
 		});
         
 	}, function (err) {
 		if (err) {
 			console.error(err.message);
 		}
-		//console.log("jobTable: ");
-		//console.log(jobTable);
+		callback(jobTable);
 	});
     
 }

@@ -22,24 +22,29 @@ function init(self){
 //        console.log(request);
 //    });
 
-    dbpedia.requestSpotlight("Linux is a clone of the operating system Unix, written from scratch by" +
-  "Linus Torvalds with assistance from a loosely-knit team of hackers across" +
-  "the Net. It aims towards POSIX and Single UNIX Specification compliance." +
-  "It has all the features you would expect in a modern fully-fledged Unix," +
-  "including true multitasking, virtual memory, shared libraries, demand "+
-  "loading, shared copy-on-write executables, proper memory management, "+
-  "and multistack networking including IPv4 and IPv6. " +
-  "It is distributed under the GNU General Public License - see the"+
-  "accompanying COPYING file for more details.", 0.35, function(result, response){
-        //console.log(result);
-        console.log(utilities.dbpediaWordCount(result));
-    });
+  //  dbpedia.requestSpotlight("Linux is a clone of the operating system Unix, written from scratch by" +
+  //"Linus Torvalds with assistance from a loosely-knit team of hackers across" +
+  //"the Net. It aims towards POSIX and Single UNIX Specification compliance." +
+  //"It has all the features you would expect in a modern fully-fledged Unix," +
+  //"including true multitasking, virtual memory, shared libraries, demand "+
+  //"loading, shared copy-on-write executables, proper memory management, "+
+  //"and multistack networking including IPv4 and IPv6. " +
+  //"It is distributed under the GNU General Public License - see the"+
+  //"accompanying COPYING file for more details.", 0.35, function(result, response){
+  //      //console.log(result);
+  //      console.log(utilities.dbpediaWordCount(result));
+  //  });
 
-    github.getAuth(function(result){
-//       console.log(result);
-       github.token = result["token"];
-       self.isReady = true;
-    });
+//    github.getAuth(function(result){
+////       console.log(result);
+//       github.token = result["token"];
+//       self.isReady = true;
+//    });
+
+	indeed.prepareJobs("Amsterdam", "nl", function (jobTable) {
+		console.log("jobTable: ");
+		console.log(jobTable);
+	});
 
 }
 
