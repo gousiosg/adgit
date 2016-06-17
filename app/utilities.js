@@ -7,6 +7,7 @@ module.exports = {
     requestHTTP      : requestHTTP,
 	getPage		     : getPage,
     dbpediaTF 	     : dbpediaTF,
+	normalizeTF		 : normalizeTF,
 	findBestMatch    : findBestMatch,
     cosineSimilarity : cosineSimilarity
 }
