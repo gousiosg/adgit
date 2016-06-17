@@ -11,7 +11,7 @@ module.exports = {
 }
 
 function getPage(fullUrl, responseFunc, errorFunc) {
-	if (errorFunc) {
+	if (!errorFunc) {
 		errorFunc = function (err) {
 			console.log(err);
 		}	
@@ -25,7 +25,7 @@ function getPage(fullUrl, responseFunc, errorFunc) {
 			responseFunc(body, res);
 		}
 
-	});
+	}).end();
 
 }
 
