@@ -5,20 +5,20 @@ const request = require('request');
 module.exports = {
     requestHTTPS : requestHTTPS,
     requestHTTP  : requestHTTP,
+	getPage		 : getPage,
     dbpediaWordCount : dbpediaWordCount,
-    cosineSimilarity : cosineSimilarity,
-	getPage		 : getPage
+    cosineSimilarity : cosineSimilarity
 }
 
 function getPage(fullUrl, responseFunc, errorFunc) {
-	if (errorFunc === undefined) {
+	if (errorFunc) {
 		errorFunc = function (err) {
 			console.log(err);
 		}	
 	}	
 	
 	request(fullUrl, function (err, res, body) {
-		if (err !== null) {
+		if (err) {
 			errorFunc(err);
 		}
 		else {
