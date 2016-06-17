@@ -3,10 +3,11 @@ const http = require('http');
 const request = require('request');
 
 module.exports = {
-    requestHTTPS : requestHTTPS,
-    requestHTTP  : requestHTTP,
-	getPage		 : getPage,
-    dbpediaWordCount : dbpediaWordCount,
+    requestHTTPS     : requestHTTPS,
+    requestHTTP      : requestHTTP,
+	getPage		     : getPage,
+    dbpediaTF 	     : dbpediaTF,
+	findBestMatch    : findBestMatch,
     cosineSimilarity : cosineSimilarity
 }
 
@@ -85,9 +86,8 @@ function requestHTTP(data, options, responseFunc, errorFunc){
 }
 
 //takes a json result from a dbpedia query
-//extracts all terms and counts them
-function dbpediaWordCount(dbpediaResult) {
-    var termCountList = [];
+//extracts all terms and counts them, adding the resulting count to tf
+function dbpediaTF(dbpediaResult, tf) {
     var foundTerms = [];
 
     for (var i = 0; i < dbpediaResult.Resources.length; i++) {
@@ -97,16 +97,104 @@ function dbpediaWordCount(dbpediaResult) {
 
     for (var i = 0; i < foundTerms.length; i++) {
         var found = false;
-        for (var j = 0; j < termCountList.length; j++) {
-            if (termCountList[j].term == foundTerms[i]) {
+        for (var j = 0; j < tf.length; j++) {
+            if (tf[j].term == foundTerms[i]) {
                 found = true;
-                termCountList[j].count++;
+                tf[j].count++;
+				break;
             }
         }
         if (!found)
-            termCountList.push({ term : foundTerms[i], count : 1 });
+            tf.push({ term : foundTerms[i], count : 1 });
     }
-    return termCountList;
+}
+
+function idf(tfListAds) {
+    var idfList = [];
+    var termList = [];
+    for (var i = 0; i < tfListAds.length; i++) {
+        var curAd = tfListAds[i];
+        for (var j = 0; j < curAd.length; j++) {
+            var curTerm = curAd[j].term;
+            var found = false;
+            for (var k = 0; k < termList.length; k++) {
+                if (termList[k].term == curTerm) {
+                    found = true
+                    termList[k].count++;
+					break;
+                }
+            }
+            if (!found)
+				termList.push({ term : curTerm, count : 1 });
+        }
+    }
+    for (var i = 0; i < termList.length; i++) {
+        var idf = 1 + Math.log(tfListAds.length / termList[i].count);
+		idfList.push({ term : termList[i].term, val : idf });
+    }
+	return idfList;
+}
+
+function normalizeTF(tf) {
+	var count = 0;
+	for(var i = 0; i < tf.length; i++)
+		count += tf[i].count;
+	for(var i = 0; i < tf.length; i++)
+		tf[i].count = tf[i].count/count;
+}
+
+function tfidf(tf, idf) {
+	var tfidf = [];
+	for(var i = 0; i < tf.length; i++) {
+		var curTerm = tf[i].term;
+		var idfval = 1.0;
+		for(var j = 0; j < idf.length; j++) {
+			if(idf[j].term == curTerm) {
+				idfval = idf[j].val;
+				break;
+			}
+		}
+		tfidf.push({ term : curTerm, tfidf : tf[i].count * idfval });
+	}
+	return tfidf;
+}
+
+//returns a list of cosine similarities, the closer the value is to 1 the closer the match with the query
+//the index in the similarity list corresponds to the index of the ad in tfListAds
+//input:
+//tfQuery, a normalized wordcount of all the github user readmes thrown together
+//tfListAds, a list of normalized wordcounts, each list corresponding to a single advertisement
+function findBestMatch(tfQuery, tfListAds)
+{
+	//compute the idf
+	var idfList = idf(tfListAds);
+	
+	//remove all terms from the ad tfs that do not appear in the query and order them like the query
+	var tfListAdsOrdered = [];
+	for(var i = 0; i < tfListAds.length; i++) {
+		var curAd = tfListAds[i];
+		var orderedAd = [];
+		for(var j = 0; j < tfQuery.length; j++) {
+			for(var k = 0; k < curAd.length; k++) {
+				if(curAd[k].term == tfQuery[j].term) {
+					orderedAd.push({ term : curAd[k].term, count : curAd[k].count });
+					break;
+				}
+				if(k == curAd.length-1)
+					orderedAd.push({ term : tfQuery[j].term, count : 0 });
+			}
+		}
+		tfListAdsOrdered.push(orderedAd);
+	}
+	
+	//create and return the list of similarities
+	var tfidfQuery = tfidf(tfQuery, idfList);
+	var similarities = [];
+	for(var i = 0; i < tfListAdsOrdered.length; i++) {
+		var tfidfAd = tfidf(tfListAdsOrdered[i], idfList);
+		similarities.push(cosineSimilarity(tfidfQuery, tfidfAd));
+	}
+	return similarities;
 }
 
 //calculates the cosine similarity of 2 vectors,
