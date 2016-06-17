@@ -44,9 +44,7 @@ function searchJobs(query, city, country, callback){
 
 function getJobSummary(html) {
 	var doc = cheerio.load(html);
-	var summary = doc('title').html() + doc('#job_summary').html();
-	//console.log(doc('#job_summary').html());
-	//console.log(doc('title').html());
+	var summary = doc('title').html() + ' ' + doc('#job_summary').html();
 
 	return summary;
 }
@@ -62,7 +60,7 @@ function prepareJobs(city, country, callback) {
 			async.forEachOf(jobs, function (item2, idx2, callback2) {
 				utilities.getPage(item2['url'], function (res2, req2) {
 					var jobTxt = getJobSummary(res2);
-					console.log(jobTxt);
+					//console.log(jobTxt);
 					jobTable.push(jobTxt);
 					callback2();
 				}, function (err3) {
