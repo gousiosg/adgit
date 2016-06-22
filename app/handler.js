@@ -52,7 +52,7 @@ function init(self){
 		query.push({ term : 'Test', count: 5});
 		utilities.normalizeTF(query);
 		console.log(utilities.findBestMatch(query, test));
-  //  });
+    });
 
 //    github.getAuth(function(result){
 ////       console.log(result);
