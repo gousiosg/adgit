@@ -1,0 +1,26 @@
+﻿{
+  "connection": {
+    "host": "localhost",
+    "port": 3000
+  },
+  "github": {
+    "_comment": "Your credentials to GitHub account",
+    "username": "",
+    "password": "",
+    "client_id": "f7959612467f83251b12",
+    "client_secret": "a61692d8e35adfb15f5b4989ead0fcc947073c20"
+  },
+  "indeed": {
+    "query_table": [
+		  "software developer",
+		  "software architect",
+		  "software engineer",
+		  "computer science",
+		  "web developer"
+    ],
+    "limit": 10,
+    "publisher": "872702252786463",
+    "radius": 50,
+    "v": "2"
+  }
+}
