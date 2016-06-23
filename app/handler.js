@@ -147,22 +147,3 @@ function gatheringData(options, res){
 
 
 }
-
-
-function getReadmes(reposList){
-
-    for(var i = 0; i < reposList.length; i++){
-        github.getReadme(reposList[i]["full_name"], function(result, request){
-
-            if(result["content"] !== undefined){
-                console.log("Readme req");
-                console.log(reposList);
-                var readmeText = new Buffer(result["content"], result["encoding"]);
-//                console.log(reposList[i]["full_name"] + ": ");
-                console.log(readmeText);
-            }
-
-        });
-    }
-
-}
