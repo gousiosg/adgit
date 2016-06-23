@@ -85,9 +85,7 @@ function gatheringData(options, callFinal){
             indeed.prepareJobs(options.city, options.country, function (jobTable) {
                 jobsResult = jobTable;
                 async.forEachOf(jobTable, function (item, idx, callback1) {
-                    console.log(item.description);
-                    console.log(":dbpediaText");
-                    item.description = item.description.replace(/([\#\(\)\:\`])/g, "");
+                    item.description = item.description.replace(/([^a-zA-Z\s\n])/g, "");
                     dbpedia.requestSpotlight(item.description, 0.35, function (result, request) {
                         jobTable[idx]["dbpedia"] = result;
                         callback1();
