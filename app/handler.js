@@ -36,7 +36,7 @@ function init(self){
 function analysis(req, res) {
     
     gatheringData({
-        username: "tiwai", 
+        username: "ruby", 
         city: "Amsterdam", 
         country: "nl"
     }, function (userObject, jobsObject) {
@@ -61,7 +61,7 @@ function gatheringData(options, callFinal){
                 async.forEachOf(reposList, function (item1, idx1, callback1) {
                     github.getReadme(item1["full_name"], function (result, request) {
                         if (result["content"] !== undefined) {
-                            var readmeText = new Buffer(result["content"], result["encoding"]).toString('ascii');
+                            var readmeText = new Buffer(result["content"], result["encoding"]).toString();
                             
                             userText += readmeText + " ";     
                         }
@@ -71,8 +71,7 @@ function gatheringData(options, callFinal){
                     if (err1) {
                         console.error(err1.message);
                     }
-                    console.log(userText);
-                    console.log(":userText");
+                    userText = userText.replace(/([\#\(\)\:\`])/g, "");
                     dbpedia.requestSpotlight(userText, 0.35, function (result, request) {
                         userResult = result;
                         callback();	
@@ -88,6 +87,7 @@ function gatheringData(options, callFinal){
                 async.forEachOf(jobTable, function (item, idx, callback1) {
                     console.log(item.description);
                     console.log(":dbpediaText");
+                    item.description = item.description.replace(/([\#\(\)\:\`])/g, "");
                     dbpedia.requestSpotlight(item.description, 0.35, function (result, request) {
                         jobTable[idx]["dbpedia"] = result;
                         callback1();
