@@ -74,21 +74,23 @@ function analysis(req, res){
     //    res.end(JSON.stringify(result));
 
     //});
-    level1("tiwai", "Amsterdam", "nl");
+    gatheringData({
+        username: "tiwai", 
+        city: "Amsterdam", 
+        country: "nl"
+    }, res);
 
 
-}
 
-function level1(username, city, country){
+function gatheringData(options, res){
     
-    var counter = 0;
     var userText = "";
     var userResult = null;
     var jobsResult = [];
     
     async.parallel([
         function (callback){
-            github.getReposList(username, function (reposList) {
+            github.getReposList(options.username, function (reposList) {
                 
                 async.forEachOf(reposList, function (item1, idx1, callback1) {
                     github.getReadme(item1["full_name"], function (result, request) {
@@ -114,7 +116,7 @@ function level1(username, city, country){
 
             });
         }, function (callback){
-            indeed.prepareJobs(city, country, function (jobTable) {
+            indeed.prepareJobs(options.city, options.country, function (jobTable) {
                 jobsResult = jobTable;
                 async.forEachOf(jobTable, function (item, idx, callback1) {
                     console.log(item.description);
