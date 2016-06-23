@@ -21,7 +21,7 @@ module.exports = (function(){
 function init(self){
 
 
-    dbpedia.requestSpotlight("Linux is a clone of the operating system Unix, written from scratch by" +
+    /*dbpedia.requestSpotlight("Linux is a clone of the operating system Unix, written from scratch by" +
   "Linus Torvalds with assistance from a loosely-knit team of hackers across" +
   "the Net. It aims towards POSIX and Single UNIX Specification compliance." +
   "It has all the features you would expect in a modern fully-fledged Unix," +
@@ -50,7 +50,7 @@ function init(self){
 		query.push({ term : 'Test', count: 5});
 		utilities.normalizeTF(query);
 		console.log(jobmatch.computeSimilarities(query, test));
-    });
+    });*/
 
     github.getAuth(function(result){
         if (result["token"]) {
@@ -119,8 +119,8 @@ function gatheringData(options, res){
             indeed.prepareJobs(options.city, options.country, function (jobTable) {
                 jobsResult = jobTable;
                 async.forEachOf(jobTable, function (item, idx, callback1) {
-                    console.log(item.description);
-                    console.log(":dbpediaText");
+                    //console.log(item.description);
+                    //console.log(":dbpediaText");
                     dbpedia.requestSpotlight(item.description, 0.35, function (result, request) {
                         jobTable[idx]["dbpedia"] = result;
                         callback1();
@@ -142,6 +142,9 @@ function gatheringData(options, res){
         console.log(userResult);
         console.log("jobsResult:");
         console.log(jobsResult);
+		var similarities = jobmatch.findMatch(userResult, jobsResult);
+		console.log("similarities:");
+		console.log(similarities);
     });
 
 

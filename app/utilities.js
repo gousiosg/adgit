@@ -123,7 +123,7 @@ function idf(tfListAds) {
             var found = false;
             for (var k = 0; k < termList.length; k++) {
                 if (termList[k].term == curTerm) {
-                    found = true
+                    found = true;
                     termList[k].count++;
 					break;
                 }
@@ -174,5 +174,7 @@ function cosineSimilarity(vec1, vec2) {
     }
     var mag1 = Math.sqrt(sum1);
     var mag2 = Math.sqrt(sum2);
+	if((mag1 * mag2) == 0)
+		return 0;
     return (dotproduct / (mag1 * mag2));
 }

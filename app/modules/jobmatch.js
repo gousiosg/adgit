@@ -12,7 +12,7 @@ function findMatch(readme, jobs)
 	jobTFs = [];
 	for(var i = 0; i < jobs.length; i++)
 	{
-		jobTF = utilities.dbpediaTF(jobs[i]);
+		jobTF = utilities.dbpediaTF(jobs[i]["dbpedia"]);
 		utilities.normalizeTF(jobTF);
 		jobTFs.push(jobTF);
 	}
