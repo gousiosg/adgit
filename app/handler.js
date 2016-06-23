@@ -73,9 +73,9 @@ function analysis(req, res) {
         country: "nl"
     }, function (userObject, jobsObject) {
         //execution of a jobMatch
-        var similarities = jobmatch.findMatch(userObject, jobsObject);
-        res.writeHead(200, { 'Content-Type': 'text/plain' });
-        res.end(similarities.toString()); 
+        var output = jobmatch.findMatch(userObject, jobsObject);
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(output)); 
     });
 
 }
