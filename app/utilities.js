@@ -10,7 +10,8 @@ module.exports = {
 	normalizeTF		 : normalizeTF,
 	idf				 : idf,
 	tfidf			 : tfidf,
-    cosineSimilarity : cosineSimilarity
+    cosineSimilarity : cosineSimilarity,
+	sortJobs		 : sortJobs
 }
 
 function getPage(fullUrl, responseFunc, errorFunc) {
@@ -177,4 +178,22 @@ function cosineSimilarity(vec1, vec2) {
 	if((mag1 * mag2) == 0)
 		return 0;
     return (dotproduct / (mag1 * mag2));
+}
+
+function compare(a, b) {
+	return (b.similarity - a.similarity);
+}
+
+function sortJobs(jobs, similarities) {
+	orderedJobs = [];
+	for(var i = 0; i < jobs.length; i++) {
+		orderedJobs.push({
+			title: jobs[i]["title"],
+			company: jobs[i]["company"],
+			url: jobs[i]["url"],
+			//description: jobs[i]["description"],
+			similarity: similarities[i]
+		});
+	}
+	return orderedJobs.sort(compare);
 }

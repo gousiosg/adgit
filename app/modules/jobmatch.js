@@ -16,7 +16,9 @@ function findMatch(readme, jobs)
 		utilities.normalizeTF(jobTF);
 		jobTFs.push(jobTF);
 	}
-	return computeSimilarities(readmeTF, jobTFs);
+	var sims = computeSimilarities(readmeTF, jobTFs);
+	var ordJobs = utilities.sortJobs(jobs, sims);
+	return ordJobs.slice(0, 20);
 }
 
 //returns a list of cosine similarities, the closer the value is to 1 the closer the match with the query

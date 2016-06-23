@@ -117,8 +117,8 @@ function gatheringData(options, callFinal){
             indeed.prepareJobs(options.city, options.country, function (jobTable) {
                 jobsResult = jobTable;
                 async.forEachOf(jobTable, function (item, idx, callback1) {
-                    //console.log(item.description);
-                    //console.log(":dbpediaText");
+                    console.log(item.description);
+                    console.log(":dbpediaText");
                     dbpedia.requestSpotlight(item.description, 0.35, function (result, request) {
                         jobTable[idx]["dbpedia"] = result;
                         callback1();
