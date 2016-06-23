@@ -83,6 +83,8 @@ function level1(username, city, country){
     
     var counter = 0;
     var userText = "";
+    var userResult = null;
+    var jobsResult = [];
     
     async.parallel([
         function (callback){
@@ -101,10 +103,10 @@ function level1(username, city, country){
                     if (err1) {
                         console.error(err1.message);
                     }
-                    //console.log("userText:");
-                    //console.log(userText);
+                    console.log(userText);
+                    console.log(":userText");
                     dbpedia.requestSpotlight(userText, 0.35, function (result, request) {
-                        
+                        userResult = result;
                     });
 
                     callback();	                    
@@ -114,8 +116,18 @@ function level1(username, city, country){
         }, function (callback){
             indeed.prepareJobs(city, country, function (jobTable) {
                 
+                async.forEachOf(jobTable, function (item, idx, callback1) {
+                    console.log(item.description);
+                    console.log(":dbpediaText");
+                    dbpedia.requestSpotlight(item.description, 0.35, function (result, request) {
+                        jobTable[idx]["dbpedia"] = result;
+                        callback1();
+                    });                    
+                }, function (err) {
+                    callback();
+                });
                                
-                callback();
+                
             });
 
         }
@@ -123,7 +135,11 @@ function level1(username, city, country){
         if (err) {
             console.error(err.message);
         }    
-    
+        //execution of an algorythm
+        console.log("userResult:");
+        console.log(userResult);
+        console.log("jobsResult:");
+        console.log(jobsResult);
     });
 
 
