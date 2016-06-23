@@ -166,7 +166,6 @@ function tfidf(tf, idf) {
 //calculates the cosine similarity of 2 vectors,
 //return value will approach 1 as similarity increases
 function cosineSimilarity(vec1, vec2) {
-	console.log(vec2);
     var dotproduct = 0, sum1 = 0, sum2 = 0;
     for (var i = 0; i < vec1.length; i++) {
         dotproduct += vec1[i].tfidf * vec2[i].tfidf;
