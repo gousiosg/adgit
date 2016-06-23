@@ -22,7 +22,7 @@ function init(self){
 //        console.log(request);
 //    });
 
-    dbpedia.requestSpotlight("Linux is a clone of the operating system Unix, written from scratch by" +
+    /*dbpedia.requestSpotlight("Linux is a clone of the operating system Unix, written from scratch by" +
   "Linus Torvalds with assistance from a loosely-knit team of hackers across" +
   "the Net. It aims towards POSIX and Single UNIX Specification compliance." +
   "It has all the features you would expect in a modern fully-fledged Unix," +
@@ -31,8 +31,7 @@ function init(self){
   "and multistack networking including IPv4 and IPv6. " +
   "It is distributed under the GNU General Public License - see the"+
   "accompanying COPYING file for more details.", 0.35, function(result, response){
-        var dbptf = [];
-		utilities.dbpediaTF(result, dbptf);
+        var dbptf = utilities.dbpediaTF(result);
 		utilities.normalizeTF(dbptf);
 		var test = [];
 		test.push(dbptf);
@@ -52,7 +51,7 @@ function init(self){
 		query.push({ term : 'Test', count: 5});
 		utilities.normalizeTF(query);
 		console.log(utilities.findBestMatch(query, test));
-    });
+    });*/
 
 //    github.getAuth(function(result){
 ////       console.log(result);
