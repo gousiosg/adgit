@@ -1,7 +1,8 @@
-const utilities = require("./utilities");
+var utilities = require("../utilities");
 
 module.exports = {
-	findMatch : findMatch
+	findMatch : findMatch,
+	computeSimilarities : computeSimilarities
 }
 
 function findMatch(readme, jobs)
@@ -50,7 +51,7 @@ function computeSimilarities(tfQuery, tfListAds)
 	var tfidfQuery = utilities.tfidf(tfQuery, idfList);
 	var similarities = [];
 	for(var i = 0; i < tfListAdsOrdered.length; i++) {
-		var tfidfAd = tfidf(tfListAdsOrdered[i], idfList);
+		var tfidfAd = utilities.tfidf(tfListAdsOrdered[i], idfList);
 		similarities.push(utilities.cosineSimilarity(tfidfQuery, tfidfAd));
 	}
 	return similarities;

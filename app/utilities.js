@@ -8,6 +8,8 @@ module.exports = {
 	getPage		     : getPage,
     dbpediaTF 	     : dbpediaTF,
 	normalizeTF		 : normalizeTF,
+	idf				 : idf,
+	tfidf			 : tfidf,
     cosineSimilarity : cosineSimilarity
 }
 
@@ -166,9 +168,9 @@ function tfidf(tf, idf) {
 function cosineSimilarity(vec1, vec2) {
     var dotproduct = 0, sum1 = 0, sum2 = 0;
     for (var i = 0; i < vec1.length; i++) {
-        dotproduct += vec1[i] * vec2[i];
-        sum1 += vec1[i] * vec1[i];
-        sum2 += vec2[i] * vec2[i];
+        dotproduct += vec1[i].tfidf * vec2[i].tfidf;
+        sum1 += vec1[i].tfidf * vec1[i].tfidf;
+        sum2 += vec2[i].tfidf * vec2[i].tfidf;
     }
     var mag1 = Math.sqrt(sum1);
     var mag2 = Math.sqrt(sum2);
