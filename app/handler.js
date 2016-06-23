@@ -36,7 +36,7 @@ function init(self){
 function analysis(req, res) {
     
     gatheringData({
-        username: "ruby", 
+        username: "Michsior14", 
         city: "Amsterdam", 
         country: "nl"
     }, function (userObject, jobsObject) {
@@ -71,7 +71,7 @@ function gatheringData(options, callFinal){
                     if (err1) {
                         console.error(err1.message);
                     }
-                    userText = userText.replace(/([\#\(\)\:\`])/g, "");
+                    userText = userText.replace(/([^a-zA-Z\s\n])/g, "");
                     dbpedia.requestSpotlight(userText, 0.35, function (result, request) {
                         userResult = result;
                         callback();	
