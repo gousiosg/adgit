@@ -65,14 +65,14 @@ function init(self){
    });
 }
 
-function analysis(req, res){
+function analysis(req, res) {
     
-
+    
     //github.getReposList("Michsior14", function (result) {
     //    getReadmes(result);
     //    res.writeHead(200, { 'Content-Type': 'text/plain' });
     //    res.end(JSON.stringify(result));
-
+    
     //});
     gatheringData({
         username: "tiwai", 
@@ -80,7 +80,7 @@ function analysis(req, res){
         country: "nl"
     }, res);
 
-
+}
 
 function gatheringData(options, res){
     
