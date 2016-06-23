@@ -67,22 +67,20 @@ function init(self){
 
 function analysis(req, res) {
     
-    
-    //github.getReposList("Michsior14", function (result) {
-    //    getReadmes(result);
-    //    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    //    res.end(JSON.stringify(result));
-    
-    //});
     gatheringData({
         username: "tiwai", 
         city: "Amsterdam", 
         country: "nl"
-    }, res);
+    }, function (userObject, jobsObject) {
+        //execution of a jobMatch
+        var similarities = jobmatch.findMatch(userObject, jobsObject);
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.end(similarities.toString()); 
+    });
 
 }
 
-function gatheringData(options, res){
+function gatheringData(options, callFinal){
     
     var userText = "";
     var userResult = null;
@@ -137,14 +135,8 @@ function gatheringData(options, res){
         if (err) {
             console.error(err.message);
         }    
-        //execution of an algorythm
-        console.log("userResult:");
-        console.log(userResult);
-        console.log("jobsResult:");
-        console.log(jobsResult);
-		var similarities = jobmatch.findMatch(userResult, jobsResult);
-		console.log("similarities:");
-		console.log(similarities);
+        //execution of a final callback
+        callFinal(userResult, jobsResult);
     });
 
 
