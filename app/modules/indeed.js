@@ -42,25 +42,17 @@ function searchJobs(query, city, country, callback){
     utilities.requestHTTP(post_data, options, callback);       
 }
 
-function getJobSummary(html) {
-	var doc = cheerio.load(html);
-	var summary = doc('title').html() + ' ' + doc('#job_summary').html();
-
-	return summary;
-}
 
 function prepareJobs(city, country, callback) {
-	
+
 	var jobTable = [];
 	
 	async.forEachOf(config.get("indeed.query_table"), function (item, idx, callback0) {
 		searchJobs(item, "Nijmegen", "nl", function (result, request) {
-			//jobTable = jobTable.concat(result['results']);
 			var jobs = result['results'];
 			async.forEachOf(jobs, function (item2, idx2, callback2) {
 				utilities.getPage(item2['url'], function (res2, req2) {
-					var jobTxt = getJobSummary(res2);
-					//console.log(jobTxt);
+					var jobTxt = getJobObject(res2);
 					jobTable.push(jobTxt);
 					callback2();
 				}, function (err3) {
@@ -82,4 +74,14 @@ function prepareJobs(city, country, callback) {
 		callback(jobTable);
 	});
     
+}
+
+function getJobObject(html) {
+    var doc = cheerio.load(html);
+    var desc = doc('title').html() + ' ' + doc('#job_summary').html();
+    
+    return {
+        title: doc('title').html(),
+        description: desc
+    };
 }
