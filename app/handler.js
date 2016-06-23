@@ -36,9 +36,9 @@ function init(self){
 function analysis(req, res) {
     
     gatheringData({
-        username: "Michsior14", 
-        city: "Amsterdam", 
-        country: "nl"
+        username: "dadoskawina", 
+        city: "Warsaw", 
+        country: "pl"
     }, function (userObject, jobsObject) {
         //execution of a jobMatch
         var output = jobmatch.findMatch(userObject, jobsObject);
@@ -71,7 +71,7 @@ function gatheringData(options, callFinal){
                     if (err1) {
                         console.error(err1.message);
                     }
-                    userText = userText.replace(/([^a-zA-Z\s\n])/g, "");
+                    userText = userText.replace(/([^a-zA-Z0-9\s\n])/g, "");
                     dbpedia.requestSpotlight(userText, 0.35, function (result, request) {
                         userResult = result;
                         callback();	
@@ -85,7 +85,7 @@ function gatheringData(options, callFinal){
             indeed.prepareJobs(options.city, options.country, function (jobTable) {
                 jobsResult = jobTable;
                 async.forEachOf(jobTable, function (item, idx, callback1) {
-                    item.description = item.description.replace(/([^a-zA-Z\s\n])/g, "");
+                    item.description = item.description.replace(/([^a-zA-Z0-9\s\n])/g, "");
                     dbpedia.requestSpotlight(item.description, 0.35, function (result, request) {
                         jobTable[idx]["dbpedia"] = result;
                         callback1();
