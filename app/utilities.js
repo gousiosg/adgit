@@ -152,7 +152,7 @@ function tfidf(tf, idf) {
 	var tfidf = [];
 	for(var i = 0; i < tf.length; i++) {
 		var curTerm = tf[i].term;
-		var idfval = 1.0;
+		var idfval = 0;
 		for(var j = 0; j < idf.length; j++) {
 			if(idf[j].term == curTerm) {
 				idfval = idf[j].val;
