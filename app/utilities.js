@@ -8,6 +8,8 @@ module.exports = {
 	getPage		     : getPage,
     dbpediaTF 	     : dbpediaTF,
 	normalizeTF		 : normalizeTF,
+	idf				 : idf,
+	tfidf			 : tfidf,
     cosineSimilarity : cosineSimilarity
 }
 

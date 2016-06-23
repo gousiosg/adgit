@@ -48,11 +48,11 @@ function prepareJobs(city, country, callback) {
 	var jobTable = [];
 	
 	async.forEachOf(config.get("indeed.query_table"), function (item, idx, callback0) {
-		searchJobs(item, "Nijmegen", "nl", function (result, request) {
-			var jobs = result['results'];
+		searchJobs(item, city, country, function (result, request) {
+            var jobs = result['results'];
 			async.forEachOf(jobs, function (item2, idx2, callback2) {
 				utilities.getPage(item2['url'], function (res2, req2) {
-					var jobTxt = getJobObject(res2);
+					var jobTxt = makeJobObject(res2, item2['company'], item2['url']);
 					jobTable.push(jobTxt);
 					callback2();
 				}, function (err3) {
@@ -76,12 +76,14 @@ function prepareJobs(city, country, callback) {
     
 }
 
-function getJobObject(html) {
+function makeJobObject(html, company, url) {
     var doc = cheerio.load(html);
     var desc = doc('title').html() + ' ' + doc('#job_summary').html();
     
     return {
         title: doc('title').html(),
+        company: company,
+        url: url,
         description: desc
     };
 }
