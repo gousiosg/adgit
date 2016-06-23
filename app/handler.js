@@ -19,43 +19,7 @@ module.exports = (function(){
 
 function init(self){
 
-<<<<<<< HEAD
-//    indeed.searchJobs("software developer", "Nijmegen", function(result, request){
-//        console.log(result);
-//        console.log(request);
-//    });
 
-    /*dbpedia.requestSpotlight("Linux is a clone of the operating system Unix, written from scratch by" +
-  "Linus Torvalds with assistance from a loosely-knit team of hackers across" +
-  "the Net. It aims towards POSIX and Single UNIX Specification compliance." +
-  "It has all the features you would expect in a modern fully-fledged Unix," +
-  "including true multitasking, virtual memory, shared libraries, demand "+
-  "loading, shared copy-on-write executables, proper memory management, "+
-  "and multistack networking including IPv4 and IPv6. " +
-  "It is distributed under the GNU General Public License - see the"+
-  "accompanying COPYING file for more details.", 0.35, function(result, response){
-        var dbptf = utilities.dbpediaTF(result);
-		utilities.normalizeTF(dbptf);
-		var test = [];
-		test.push(dbptf);
-		testcount = [];
-		testcount.push({ term : 'Unix', count : 2});
-		testcount.push({ term : 'Linux', count: 1});
-		testcount.push({ term : 'Test', count: 2});
-		utilities.normalizeTF(testcount);
-		test.push(testcount);
-		testcount2 = [];
-		testcount2.push({ term : 'Unix', count: 5});
-		testcount2.push({ term : 'Testing', count : 1});
-		utilities.normalizeTF(testcount2);
-		test.push(testcount2);
-		query = [];
-		query.push({ term : 'Unix', count: 5});
-		query.push({ term : 'Test', count: 5});
-		utilities.normalizeTF(query);
-		console.log(utilities.findBestMatch(query, test));
-    });*/
-=======
   //  dbpedia.requestSpotlight("Linux is a clone of the operating system Unix, written from scratch by" +
   //"Linus Torvalds with assistance from a loosely-knit team of hackers across" +
   //"the Net. It aims towards POSIX and Single UNIX Specification compliance." +
@@ -99,10 +63,6 @@ function init(self){
        
        
    });
->>>>>>> origin/development
-
-
-
 }
 
 function analysis(req, res){
