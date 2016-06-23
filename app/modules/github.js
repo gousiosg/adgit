@@ -88,11 +88,13 @@ function requestAuth(callback){
 }
 
 function secureRequest(options){
-    if(options["headers"] === undefined){
-        options["headers"] = {};
-    }
-    if(this.token !== null){
-        options["headers"]["X-Shopify-Access-Token"] = this.token;
+    if (this.token) {
+        if (options.path.indexOf('?') > -1) {
+            options.path += '&access_token=' + this.token;
+        }
+        else {
+            options.path += '?' + 'access_token=' + this.token;
+        }
     }
     return options;
 }
