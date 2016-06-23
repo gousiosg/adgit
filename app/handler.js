@@ -74,7 +74,7 @@ function analysis(req, res){
     //    res.end(JSON.stringify(result));
 
     //});
-    level1("Michsior14", "Amsterdam", "nl");
+    level1("tiwai", "Amsterdam", "nl");
 
 
 }
@@ -93,7 +93,7 @@ function level1(username, city, country){
                 async.forEachOf(reposList, function (item1, idx1, callback1) {
                     github.getReadme(item1["full_name"], function (result, request) {
                         if (result["content"] !== undefined) {
-                            var readmeText = new Buffer(result["content"], result["encoding"]).toString();
+                            var readmeText = new Buffer(result["content"], result["encoding"]).toString('ascii');
                             
                             userText += readmeText + " ";     
                         }
@@ -115,7 +115,7 @@ function level1(username, city, country){
             });
         }, function (callback){
             indeed.prepareJobs(city, country, function (jobTable) {
-                
+                jobsResult = jobTable;
                 async.forEachOf(jobTable, function (item, idx, callback1) {
                     console.log(item.description);
                     console.log(":dbpediaText");
