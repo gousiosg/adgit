@@ -4,13 +4,21 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha -w"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "async": "^2.0.0-rc.6",
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "cheerio": "^0.20.0",
+    "config": "^1.21.0",
+    "country-data": "0.0.24",
+    "mocha": "^2.5.3",
+    "mongoose": "^4.5.1",
     "querystring": "^0.2.0",
+    "request": "^2.72.0",
     "rx": "^4.1.0"
   }
 }

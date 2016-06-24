@@ -6,8 +6,8 @@ const requests = new Rx.Subject();
 const hostname = config.get('connection.host');
 const port = config.get('connection.port');
 
-const github = require("./config/github.js");
-const handler = require("./config/handler.js");
+const handlerApp = require("./app/handler");
+const handlerClient = require("./client/handler");
 
 requests
   .subscribe(main);
@@ -19,7 +19,13 @@ http.createServer((req, res) => {
 });
 
 function main(e) {
-    
-    var handlerObject = handler.analysis(e.req, e.res);
+    if(e.req.url.indexOf('/service') > -1){
+        handlerApp.analysis(e.req, e.res);
+    }
+    else{
+        handlerClient.getFile(e.req, e.res);
+
+    }
+
         
 }

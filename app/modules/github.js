@@ -1,5 +1,6 @@
-const https = require('https');
 const config = require('config');
+
+const utilities = require('../utilities');
 
 module.exports = (function(){
     var struct = {};
@@ -8,6 +9,7 @@ module.exports = (function(){
     this.getReposList = getReposList;
     this.getReadme = getReadme;
     this.getAuth = getAuth;
+    this.secureRequest = secureRequest;
     this.token = null;
     
     return this;
@@ -16,7 +18,7 @@ module.exports = (function(){
 
 function getAuth(callback){
     var that = this;
-    requestAuth("f7959612467f83251b12", "a61692d8e35adfb15f5b4989ead0fcc947073c20", callback);
+    requestAuth(callback);
 }
 
 function getReposList(username, callback){
@@ -30,8 +32,10 @@ function getReposList(username, callback){
           'User-Agent': 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)'
       }
     };
+
+    options = this.secureRequest(options);
     
-    sendRequest(post_data, options, callback);
+    utilities.requestHTTPS(post_data, options, callback);
 
 }
 
@@ -48,10 +52,12 @@ function getReadme(fullName, callback){
       }
     };
     
-    sendRequest(post_data, options, callback);    
+    options = this.secureRequest(options);
+    
+    utilities.requestHTTPS(post_data, options, callback);    
 }
 
-function requestAuth(clientId, clientSecret, callback){
+function requestAuth(callback){
     var post_data = { 
         "scopes": [ "public_repo"],
         "note": "admin script",
@@ -78,41 +84,19 @@ function requestAuth(clientId, clientSecret, callback){
       }
     };
     
-    sendRequest(post_data, options, callback);       
+    utilities.requestHTTPS(post_data, options, callback);       
 }
 
-function sendRequest(data, options, responseFunc, errorFunc){
-//    console.log(this.token);
-    if(this.token !== null){
-        options["headers"]["X-Shopify-Access-Token"] = this.token;
+function secureRequest(options){
+    if (this.token) {
+        if (options.path.indexOf('?') > -1) {
+            options.path += '&access_token=' + this.token;
+        }
+        else {
+            options.path += '?' + 'access_token=' + this.token;
+        }
     }
-    
-//    console.log("Sending request:");
-//    console.log(options);
-    
-    var req = https.request(options, function(response){
-
-        var resBody = '';
-        response.on("data", function(chunk) {
-            resBody += chunk;
-        });
-        response.on("end", function(){
-            result = JSON.parse(resBody);
-            responseFunc(result, options);
-            
-        });
-    });
-    
-    if(errorFunc !== undefined){
-        req.on('error', errorFunc);
-    }
-    else{
-        req.on('error', function(err){    
-           console.log(err); 
-        });
-    }
-    req.write(data);
-    req.end();
-}    
+    return options;
+}
     
     
