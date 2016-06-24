@@ -1,4 +1,6 @@
 const async = require('async');
+const url = require('url');
+
 
 var github  =  require("./modules/github");
 const indeed  =  require("./modules/indeed");
@@ -34,12 +36,9 @@ function init(self){
 }
 
 function analysis(req, res) {
-    
-    gatheringData({
-        username: "dadoskawina", 
-        city: "Warsaw", 
-        country: "pl"
-    }, function (userObject, jobsObject) {
+    var queryObject = url.parse(req.url,true).query;
+
+    gatheringData(queryObject, function (userObject, jobsObject) {
         //execution of a jobMatch
         var output = jobmatch.findMatch(userObject, jobsObject);
         res.writeHead(200, { 'Content-Type': 'application/json' });

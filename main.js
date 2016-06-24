@@ -19,11 +19,12 @@ http.createServer((req, res) => {
 });
 
 function main(e) {
-    if(e.req.url.indexOf('/client') > -1){
-        handlerClient.getFile(e.req, e.res);
+    if(e.req.url.indexOf('/service') > -1){
+        handlerApp.analysis(e.req, e.res);
     }
     else{
-        handlerApp.analysis(e.req, e.res);
+        handlerClient.getFile(e.req, e.res);
+
     }
 
         
