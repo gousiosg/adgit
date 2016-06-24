@@ -42,7 +42,7 @@ npm test
 and developers can write new modules in JavaScript. 
 The runtime environment interprets JavaScript using Google's V8 JavaScript engine.
 * Indeed API - API Web Service of job advertisment's 
-* DB Spotlight = [DB Spotlight](https://github.com/dbpedia-spotlight/dbpedia-spotlight)
+* [DB Spotlight](https://github.com/dbpedia-spotlight/dbpedia-spotlight)
 
 
 ## Authors
