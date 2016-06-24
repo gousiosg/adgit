@@ -37,13 +37,19 @@ function init(self){
 
 function analysis(req, res) {
     var queryObject = url.parse(req.url,true).query;
+    if(queryObject['username'] && queryObject['city'] && queryObject['country']){
+        gatheringData(queryObject, function (userObject, jobsObject) {
+            //execution of a jobMatch
+            var output = jobmatch.findMatch(userObject, jobsObject);
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(output));
+        });
+    }
+    else{
+        res.writeHead(406, { 'Content-Type': 'text/plain' });
+        res.end("Wrong input");
+    }
 
-    gatheringData(queryObject, function (userObject, jobsObject) {
-        //execution of a jobMatch
-        var output = jobmatch.findMatch(userObject, jobsObject);
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(output)); 
-    });
 
 }
 
