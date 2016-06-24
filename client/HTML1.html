@@ -2,19 +2,78 @@
 
 <div class="form-style-8">
     <h2>Search the best work for your experience</h2>
-    <form>
-        <input type="text" name="field1" placeholder="Github user name" />
-        <input type="text" name="field2" placeholder="City" />
-        <input type="text" name="field3" placeholder="Country" />
-        <input type="button" value="Submit" />
+    <form id="requestForm">
+        <input type="text" name="username" placeholder="Github user name" />
+        <input type="text" name="city" placeholder="City" />
+        <input type="text" name="country" placeholder="Country" />
+        <input type="submit" value="Submit" />
     </form>
-
+</div>
+<br/><br/>
+<div id="output" style="margin: auto; visibility: hidden;" >
+    <table border="1" cellpadding="5" id="jsonTable" style="border-collapse: collapse;">
+    </table>
 </div>
 
+<script src="jquery-1.11.3.min.js"></script>
+<script type="text/javascript">
+    $('#requestForm').submit(function(e){
+        e.preventDefault();
+        $.ajax({
+            url:'/service?' + $('#requestForm').serialize(),
+            type:'post',
+            success: function(data){
 
-<style type="text/css">
+                var columns = creatingTable(data);
+
+                for (var i = 0; i < data.length; i++) {
+
+                    var row$ = $('<tr/>');
+                    for (var columnIndex = 0; columnIndex < columns.length; columnIndex++) {
+                        console.log(columns[columnIndex]);
+                        var cellValue = data[i][columns[columnIndex]];
+
+                        if (cellValue == null) {
+                            cellValue = "";
+                        }
+                        if(columns[columnIndex] == "url"){
+                            row$.append($('<td/>').html('<a href="' + cellValue + '">Website</a>'));
+                        }
+                        else{
+                            row$.append($('<td/>').html(cellValue));
+                        }
+
+                        row$.css("color", "white");
+                    }
+                    $("#jsonTable").append(row$);
+                }
+                $("#output").css("visibility", "visible");
+            }
+        });
+    });
+
+    function creatingTable(list) {
+        var column = [];
+        var headerTr$ = $('<tr style="background: #2CBBBB; color: #FFFFFF; column-width: 100px!important;" />');
+
+        for (var i = 0; i < list.length; i++) {
+            var row = list[i];
+            for (var key in row) {
+                if ($.inArray(key, column) == -1) {
+                    column.push(key);
+                    headerTr$.append($('<th/>').html(key));
+                }
+            }
+        }
+        $("#jsonTable").append(headerTr$);
+
+        return column;
+    }
+</script>
+
+    <style type="text/css">
     body {
-        background-image: url(http://wallpaperbeta.com/wallpaper/macro_grass_morning_dew_drops_background_hd-wallpaper-376900.jpg);
+        background-image: url("background.jpg");
     }
     .form-style-8{
         font-family: 'Open Sans Condensed', arial, sans;
