@@ -65,7 +65,7 @@ The runtime environment interprets JavaScript using Google's V8 JavaScript engin
 
 ## Authors
 
-* **Georgios Gousios** - *gousiosg* - [gousiosg](https://github.com/gousiosg)
+* **Georgios Gousios** - *Supervisor* - [gousiosg](https://github.com/gousiosg)
 
 * **Agnieszka Rakowska** - *Developer* - [agarak](https://github.com/agarak)
 
