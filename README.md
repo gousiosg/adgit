@@ -1,6 +1,6 @@
-# Project Title
+# AdGit
 
-AdGit - web service which provides a tool to select interesting job advertisments (from website: "http://www.indeed.nl/"),
+A web service which provides a tool to select interesting job advertisments (from website: "http://www.indeed.nl/"),
  which is matching to the experience of developer. The matching process analysis readmes from the public repositories on GitHub and analyse them.
 We propose a pipeline that automatizes thisprocess and automatically suggests matching job advertisementsto developers, 
 based on signals extracting from their activities onGitHub.
