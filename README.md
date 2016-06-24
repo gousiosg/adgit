@@ -27,24 +27,6 @@ node main.js
 Before you will start to work with a project make sure that you have already installed Node.JS on your operating system.
 Node.JS is avaiable under this website: "https://nodejs.org/en/".
 
-### Installing
-
-A step by step series of examples that tell you have to get a development env running
-
-Stay what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
 ## Running the tests
 
 Execution of the tests can be made by
@@ -60,7 +42,7 @@ npm test
 and developers can write new modules in JavaScript. 
 The runtime environment interprets JavaScript using Google's V8 JavaScript engine.
 * Indeed API - API Web Service of job advertisment's 
-* DB Spotlight
+* DB Spotlight = [DB Spotlight](https://github.com/dbpedia-spotlight/dbpedia-spotlight)
 
 
 ## Authors
