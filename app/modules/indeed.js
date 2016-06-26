@@ -8,15 +8,15 @@ const utilities = require('../utilities');
 module.exports = (function(){
     var struct = {
 		searchJobs: searchJobs,
-		prepareJobs: prepareJobs  
+		prepareJobs: prepareJobs
     };
-    
+
     return struct;
 })();
 
 function searchJobs(query, city, country, callback){
     var post_data = "";
-    
+
     var paramJSON = {
         publisher: config.get("indeed.publisher"),
         q: query,
@@ -27,27 +27,26 @@ function searchJobs(query, city, country, callback){
         limit: config.get("indeed.limit"),
         format: "json"
     };
-    
+
     var param = querystring.stringify(paramJSON);
-    
+
     var options = {
         host: 'api.indeed.com',
         path: '/ads/apisearch?' + param,
-        method: 'GET', 
+        method: 'GET',
         headers: {
           'User-Agent'    : 'Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)',
         }
     };
-    
-    utilities.requestHTTP(post_data, options, callback);       
+    console.log ( 'Requesting ' + options.path );
+    utilities.requestHTTP(post_data, options, callback);
 }
-
 
 function prepareJobs(city, country, callback) {
 
 	var jobTable = [];
-	
-	async.forEachOf(config.get("indeed.query_table"), function (item, idx, callback0) {
+
+	async.forEachOfLimit(config.get("indeed.query_table"), 1,  function (item, idx, callback0) {
 		searchJobs(item, city, country, function (result, request) {
             var jobs = result['results'];
 			async.forEachOf(jobs, function (item2, idx2, callback2) {
@@ -61,25 +60,25 @@ function prepareJobs(city, country, callback) {
 			}, function (err2) {
 				if (err2) {
 					console.error(err2.message);
-				}				
+				}
 				callback0();
 			});
-			
+
 		});
-        
+
 	}, function (err) {
 		if (err) {
 			console.error(err.message);
 		}
 		callback(jobTable);
 	});
-    
+
 }
 
 function makeJobObject(html, company, url) {
     var doc = cheerio.load(html);
     var desc = doc('title').html() + ' ' + doc('#job_summary').html();
-    
+
     return {
         title: doc('title').html(),
         company: company,
